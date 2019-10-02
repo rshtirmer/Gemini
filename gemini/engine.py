@@ -172,10 +172,15 @@ class backtest():
                 except Exception as E:
                     print(E)
         
-        fig.add_trace(go.Scatter(*zip(*longs), name='long', mode='markers', marker_color='green', marker_size=8))
-        fig.add_trace(go.Scatter(*zip(*shorts), name='short', mode='markers', marker_color='red', marker_size=8))
-        fig.add_trace(go.Scatter(*zip(*sells), name='sell', mode='markers', marker_color='blue', marker_size=8))
-        fig.add_trace(go.Scatter(*zip(*covers), name='cover', mode='markers', marker_color='orange', marker_size=8))
+        x_long, y_long = zip(*longs)
+        x_short, y_short = zip(*shorts)
+        x_sell, y_sell = zip(*sells)
+        x_cover, y_cover = zip(*covers)
+
+        fig.add_trace(go.Scatter(x=x_long, y=y_long, name='long', mode='markers', marker_color='green', marker_size=8))
+        fig.add_trace(go.Scatter(x=x_short, y=y_short, name='short', mode='markers', marker_color='red', marker_size=8))
+        fig.add_trace(go.Scatter(x=x_sell, y=y_sell, name='sell', mode='markers', marker_color='blue', marker_size=8))
+        fig.add_trace(go.Scatter(x=x_cover, y=y_cover, name='cover', mode='markers', marker_color='orange', marker_size=8))
         
         fig.update_layout(
             title=title,
