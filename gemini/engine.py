@@ -148,18 +148,26 @@ class backtest():
                         x=self.data['date'],
                         y=self.account.equity,
                         name="Strategy"))
-        longs = []
-        shorts = []
-        sells = []
-        covers = []
+        x_long  = []
+        y_long  = []
+        x_short = []
+        y_short = []
+        x_sell  = []
+        y_sell  = []
+        x_cover = []
+        y_cover = []
         
         if show_trades:
             for trade in self.account.opened_trades:
                 try:
                     x = time.mktime(trade.date.timetuple())*1000
                     y = self.account.equity[np.where(self.data['date'] == trade.date.strftime("%Y-%m-%d"))[0][0]]
-                    if trade.type == 'long': longs.append((x, y))
-                    elif trade.type == 'short': shorts.append((x, y))
+                    if trade.type == 'long': 
+                        x_long.append(x)
+                        y_long.append(y)
+                    elif trade.type == 'short':
+                        x_short.append(x)
+                        y_short.append(y)
                 except Exception as E:
                     print(E)
 
@@ -167,16 +175,15 @@ class backtest():
                 try:
                     x = time.mktime(trade.date.timetuple())*1000
                     y = self.account.equity[np.where(self.data['date'] == trade.date.strftime("%Y-%m-%d"))[0][0]]
-                    if trade.type == 'long': sells.append((x, y))
-                    elif trade.type == 'short': shorts.append((x, y))
+                    if trade.type == 'long': 
+                        x_sell.append(x)
+                        y_sell.append(y)
+                    elif trade.type == 'short':
+                        x_cover.append(x)
+                        y_cover.append(y)
                 except Exception as E:
                     print(E)
         
-        x_long, y_long = zip(*longs)
-        x_short, y_short = zip(*shorts)
-        x_sell, y_sell = zip(*sells)
-        x_cover, y_cover = zip(*covers)
-
         fig.add_trace(go.Scatter(x=x_long, y=y_long, name='long', mode='markers', marker_color='green', marker_size=8))
         fig.add_trace(go.Scatter(x=x_short, y=y_short, name='short', mode='markers', marker_color='red', marker_size=8))
         fig.add_trace(go.Scatter(x=x_sell, y=y_sell, name='sell', mode='markers', marker_color='blue', marker_size=8))
