@@ -132,6 +132,10 @@ class long_position(position):
     def stop_hit(self, current_price):
         if current_price <= self.stop_loss:
             return(True)
+        
+    def tp_hit(self, current_price):
+        if current_price > self.exit_price:
+            return(True)
 
     def stop_adjust(self, current_price):
         if self.trailing_stop:
@@ -183,6 +187,10 @@ class short_position(position):
 
     def stop_hit(self, current_price):
         if current_price >= self.stop_loss:
+            return(True)
+
+    def tp_hit(self, current_price):
+        if current_price < self.exit_price:
             return(True)
 
     def stop_adjust(self, current_price):
