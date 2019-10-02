@@ -154,3 +154,4 @@ class backtest():
         )
    
         fig.show()
+        fig.write_html('chart.html', auto_open=True)
