@@ -148,14 +148,18 @@ class backtest():
                         x=self.data['date'],
                         y=self.account.equity,
                         name="Strategy"))
+        longs = []
+        shorts = []
+        sells = []
+        covers = []
         
         if show_trades:
             for trade in self.account.opened_trades:
                 try:
                     x = time.mktime(trade.date.timetuple())*1000
                     y = self.account.equity[np.where(self.data['date'] == trade.date.strftime("%Y-%m-%d"))[0][0]]
-                    if trade.type == 'long': fig.add_trace(go.Scatter(x=[x], y=[y], mode='markers', marker_color='green', marker_size=8))
-                    elif trade.type == 'short': fig.add_trace(go.Scatter(x=[x], y=[y], mode='markers', marker_color='red', marker_size=8))
+                    if trade.type == 'long': longs.append((x, y))
+                    elif trade.type == 'short': shorts.append((x, y))
                 except Exception as E:
                     print(E)
 
@@ -163,11 +167,16 @@ class backtest():
                 try:
                     x = time.mktime(trade.date.timetuple())*1000
                     y = self.account.equity[np.where(self.data['date'] == trade.date.strftime("%Y-%m-%d"))[0][0]]
-                    if trade.type == 'long': fig.add_trace(go.Scatter(x=[x], y=[y], mode='markers', marker_color='blue', marker_size=8))
-                    elif trade.type == 'short': fig.add_trace(go.Scatter(x=[x], y=[y], mode='markers', marker_color='orange', marker_size=8))
+                    if trade.type == 'long': sells.append((x, y))
+                    elif trade.type == 'short': shorts.append((x, y))
                 except Exception as E:
                     print(E)
-
+        
+        fig.add_trace(go.Scatter(*zip(*longs), name='long', mode='markers', marker_color='green', marker_size=8))
+        fig.add_trace(go.Scatter(*zip(*shorts), name='short', mode='markers', marker_color='red', marker_size=8))
+        fig.add_trace(go.Scatter(*zip(*sells), name='sell', mode='markers', marker_color='blue', marker_size=8))
+        fig.add_trace(go.Scatter(*zip(*covers), name='cover', mode='markers', marker_color='orange', marker_size=8))
+        
         fig.update_layout(
             title=title,
         )
