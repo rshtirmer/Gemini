@@ -1,4 +1,4 @@
-bokeh
+plotly==4.1.0
 numpy
 pandas
 requests
