@@ -250,6 +250,7 @@ class account():
                 shares = entry_capital / entry_price
             
             if type == 'long': 
+                exit_price = math.inf if exit_price == 0 else exit_price
                 self.positions.append(long_position(self.no, 
                                                     entry_price, 
                                                     shares, 
