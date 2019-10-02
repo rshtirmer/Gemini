@@ -154,19 +154,19 @@ class backtest():
                 try:
                     x = time.mktime(trade.date.timetuple())*1000
                     y = self.account.equity[np.where(self.data['date'] == trade.date.strftime("%Y-%m-%d"))[0][0]]
-                    if trade.type == 'long': fig.add_trace(go.Scatter(x, y, mode='markers', color='green'))
-                    elif trade.type == 'short': fig.add_trace(go.Scatter(x, y, mode='markers', color='red'))
-                except:
-                    pass
+                    if trade.type == 'long': fig.add_trace(go.Scatter(x, y, name='long', mode='markers', color='green'))
+                    elif trade.type == 'short': fig.add_trace(go.Scatter(x, y, name='short', mode='markers', color='red'))
+                except Exception as E:
+                    print(E)
 
             for trade in self.account.closed_trades:
                 try:
                     x = time.mktime(trade.date.timetuple())*1000
                     y = self.account.equity[np.where(self.data['date'] == trade.date.strftime("%Y-%m-%d"))[0][0]]
-                    if trade.type == 'long': fig.add_trace(go.Scatter(x, y, mode='markers', color='blue'))
-                    elif trade.type == 'short': fig.add_trace(go.Scatter(x, y, mode='markers', color='orange'))
-                except:
-                    pass
+                    if trade.type == 'long': fig.add_trace(go.Scatter(x, y, name='sell', mode='markers', color='blue'))
+                    elif trade.type == 'short': fig.add_trace(go.Scatter(x, y, name='cover', mode='markers', color='orange'))
+                except Exception as E:
+                    print(E)
 
         fig.update_layout(
             title=title,
