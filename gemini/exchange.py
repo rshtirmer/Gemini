@@ -240,7 +240,7 @@ class account():
                 shares = entry_capital / (entry_price + commission * entry_price)
             else:
                 shares = entry_capital / entry_price
-
+            
             if type == 'long': 
                 self.positions.append(long_position(self.no, 
                                                     entry_price, 
@@ -248,7 +248,8 @@ class account():
                                                     exit_price, 
                                                     stop_loss,
                                                     trailing_stop))
-            elif type == 'short': 
+            elif type == 'short':
+                stop_loss = math.inf if stop_loss == 0 else stop_loss
                 self.positions.append(short_position(self.no, 
                                                      entry_price, 
                                                      shares, 
