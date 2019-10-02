@@ -142,12 +142,12 @@ class backtest():
         fig.add_trace(go.Scatter(
                         x=self.data['date'],
                         y=base_equity,
-                        name="Buy and Hold")
+                        name="Buy and Hold"))
 
         fig.add_trace(go.Scatter(
                         x=self.data['date'],
                         y=self.account.equity,
-                        name="Strategy")
+                        name="Strategy"))
         
         fig.update_layout(
             title=title,
