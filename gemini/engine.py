@@ -48,11 +48,13 @@ class backtest():
             date = today['date']
             equity = self.account.total_value(today['close'])
 
-            # Stop loss handling
+            # Stop loss & Take Profit handling
             for p in self.account.positions:
                 if p.type == "long":
                     if p.stop_hit(today['low']):
                         self.account.close_position(p, 1.0, today['low'])
+                    elif p.tp_hit(today['high']):
+                        self.account.close_position(p, 1.0, p.exit_price)
                     else:
                         if p.trailing_stop:
                             if today['close'] > today['open']:
@@ -61,6 +63,8 @@ class backtest():
                 if p.type == "short":
                     if p.stop_hit(today['high']):
                         self.account.close_position(p, 1.0, today['high'])
+                    elif p.tp_hit(today['low']):
+                        self.account.close_position(p, 1.0, p.exit_price)
                     else:
                         if p.trailing_stop:
                             if today['close'] < today['open']:
