@@ -126,7 +126,7 @@ class backtest():
         print("Total Trades : {0}".format(longs + sells + shorts + covers))
         print("\n---------------------------------------")
     
-    def chart(self, show_trades=False, title="Equity Curve"):
+    def chart(self, show_trades=True, title="Equity Curve"):
         """Chart results.
 
         :param show_trades: Show trades on plot
@@ -172,5 +172,4 @@ class backtest():
             title=title,
         )
    
-        fig.show()
         fig.write_html('chart.html', auto_open=True)
