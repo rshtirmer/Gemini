@@ -149,6 +149,25 @@ class backtest():
                         y=self.account.equity,
                         name="Strategy"))
         
+        if show_trades:
+            for trade in self.account.opened_trades:
+                try:
+                    x = time.mktime(trade.date.timetuple())*1000
+                    y = self.account.equity[np.where(self.data['date'] == trade.date.strftime("%Y-%m-%d"))[0][0]]
+                    if trade.type == 'long': fig.add_trace(go.Scatter(x, y, mode='markers', color='green'))
+                    elif trade.type == 'short': fig.add_trace(go.Scatter(x, y, mode='markers', color='red'))
+                except:
+                    pass
+
+            for trade in self.account.closed_trades:
+                try:
+                    x = time.mktime(trade.date.timetuple())*1000
+                    y = self.account.equity[np.where(self.data['date'] == trade.date.strftime("%Y-%m-%d"))[0][0]]
+                    if trade.type == 'long': fig.add_trace(go.Scatter(x, y, mode='markers', color='blue'))
+                    elif trade.type == 'short': fig.add_trace(go.Scatter(x, y, mode='markers', color='orange'))
+                except:
+                    pass
+
         fig.update_layout(
             title=title,
         )
